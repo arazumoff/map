@@ -1,50 +1,41 @@
 import * as ActionTypes from '../actions'
 import { combineReducers } from 'redux'
-import {unionBy, rest} from 'lodash';
-import {PER_PAGE} from '../config';
 
-
-const status=(state = [], action)=>{
+const devices = (state= {hash:{}, values:[]}, action)=>{
     switch (action.type) {
         case ActionTypes.CHANGE_STATUS:
-            return unionBy(state, action.data, 'mac');
-        case ActionTypes.GET_PAGE:
-            return
-        default:
-            return state
-    }
-}
-
-const pages=(state=0, action)=>{
-    switch(action.type){
-        case ActionTypes.GET_PAGES:
-            return Math.ceil(action.data.length/PER_PAGE);
+            action.data.forEach(item => {
+                if(item.mac in state.hash){
+                    const ind = state.hash[item.mac];
+                    state.values[ind] = Object.assign(state.values[ind], item);
+                }else{
+                    state.values.push(item);
+                    state.hash[item.mac] = state.values.length-1;
+                }
+            });
+            return Object.assign({}, state);
+        case ActionTypes.CHANGE_LOCATION:
+            action.data.forEach(item => {
+                if(item.mac in state.hash){
+                    const ind = state.hash[item.mac];
+                    state.values[ind] = Object.assign(state.values[ind], item);
+                }else{
+                    state.values.push(item);
+                    state.hash[item.mac] = state.values.length-1;
+                }
+            });
+            return Object.assign({}, state);
         default:
             return state;
     }
 }
 
 const currentPage=(state=1, action) => {
-    return action.type === ActionTypes.REQUEST_PAGE ? action.payload.page : state
-}
-
-const location=(state = [], action)=>{
-    switch (action.type) {
-        case ActionTypes.CHANGE_LOCATION:
-            let a = unionBy(state, action.data, 'mac');
-            a.shift();
-            return a
-        case ActionTypes.GET_LOCATION:
-            return
-        default:
-            return state
-    }
+    return action.type === ActionTypes.REQUEST_PAGE ? action.page : state
 }
 
 const rootReducer = combineReducers({
-    status,
-    pages,
     currentPage,
-    location
+    devices
 })
 export default rootReducer

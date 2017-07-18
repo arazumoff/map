@@ -641,7 +641,7 @@ export const PruneClusterForLeaflet = (L.Layer ? L.Layer : L.Class).extend({// e
                 else if (cluster.population > 1 && data._leafletOldPopulation > 1 && (oldMarker._zoomLevel === zoom ||
                         data._leafletPosition.equals(position))) {
                     oldMarker.setLatLng(position);
-                    if (resetIcons || cluster.population != data._leafletOldPopulation ||
+                    if (resetIcons || cluster.population !== data._leafletOldPopulation ||
                         cluster.hashCode !== data._leafletOldHashCode) {
                         var boundsCopy = {};
                         L.Util.extend(boundsCopy, cluster.bounds);// eslint-disable-line no-undef
