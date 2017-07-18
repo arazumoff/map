@@ -3,11 +3,17 @@ import { combineReducers } from 'redux'
 import {unionBy, rest} from 'lodash';
 import {PER_PAGE} from '../config';
 
-
 const status=(state = [], action)=>{
     switch (action.type) {
         case ActionTypes.CHANGE_STATUS:
-            return unionBy(state, action.data, 'mac');
+            //return unionBy(state, action.data, 'mac');
+            const res = state.map(item1 => {
+                return Object.assign(item1, action.data.find(item2 => {
+                    return item2 && item1.mac === item2.mac
+                }))
+            });
+            console.log(res)
+            return res;
         case ActionTypes.GET_PAGE:
             return
         default:

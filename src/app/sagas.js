@@ -30,6 +30,7 @@ function initWS() {
                     case 'location':
                         return emitter({type: ActionTypes.CHANGE_LOCATION, data: msg.data});
                     case 'status':
+                        console.log(msg.data.length);
                         return emitter({type: ActionTypes.CHANGE_STATUS, data: msg.data});
                     default:
                     // nothing to do

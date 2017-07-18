@@ -4,7 +4,7 @@ const getItems = (state) => state.status;
 
 const getItemsOnline = createSelector(
     [getItems],
-    items => items.filter(item=> item.status.isOnline)
+    items => items.filter(item => item.status.isOnline)
 )
 
 const getItemsOffline = createSelector(
