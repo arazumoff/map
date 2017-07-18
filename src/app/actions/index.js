@@ -1,6 +1,5 @@
 export const CHANGE_STATUS = 'CHANGE_STATUS'
-export const GET_PAGE = 'GET_PAGE'
+export const LOAD_PAGE = 'LOAD_PAGE'
 export const REQUEST_PAGE = 'REQUEST_PAGE'
 export const GET_PAGES = 'GET_PAGES'
 export const CHANGE_LOCATION = 'CHANGE_LOCATION'
-export const GET_LOCATION = 'GET_LOCATION'

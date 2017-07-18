@@ -2,20 +2,33 @@ import React from 'react';
 import {Map, TileLayer, LayerGroup} from 'react-leaflet';
 import { connect } from 'react-redux';
 import {PruneClusterForLeaflet, PruneCluster} from '../PruneCluster';
-
+import {getItemsOnline} from '../selectors';
 
 class Mark extends LayerGroup{
 
-    render(){
-        console.log('yes');
-        const {markers} = this.props;
-        const pruneCluster = new PruneClusterForLeaflet();
+    constructor(props) {
+        super(props);
+        console.log('test')
+        this.pruneCluster = new PruneClusterForLeaflet();
+    }
 
-        markers.map(item=> {
+    componentDidMount(){
+        this.layerContainer.addLayer(this.pruneCluster);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.pruneCluster.RemoveMarkers();
+    }
+
+    render(){
+        const {markers} = this.props;
+        markers.forEach(item=> {
             var m = new PruneCluster.Marker(item.location.lat, item.location.lon);
-            pruneCluster.RegisterMarker(m);
+            m.data.popup = `mac-address: ${item.mac}<br>location:${item.location.lat}, ${item.location.lon}<br>
+            status: ${item.status.isOnline}`;
+            this.pruneCluster.RegisterMarker(m);
         });
-        //this.layerContainer.addLayer(pruneCluster);
+        this.pruneCluster.ProcessView();
         return (null)
     }
 }
@@ -28,6 +41,7 @@ class Mapper extends React.Component{
         const {markers} = this.props;
 
         return (<div className="col-sm-9">
+            {markers.length}
             <Map id="map" className="markercluster-map" center={[51.0, 19.0]} zoom={2} maxZoom={18}>
                 <TileLayer
                     url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
@@ -41,7 +55,7 @@ class Mapper extends React.Component{
 const makeMapStateToProps = () => {
     const mapStateToProps = (state, props) => {
         return {
-            markers: state.location,
+            markers: getItemsOnline(state),
         }
     }
     return mapStateToProps
