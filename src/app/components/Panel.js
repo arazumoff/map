@@ -13,7 +13,7 @@ class PanelItem extends React.PureComponent{
         return (
             <div>
                 <div>mac:{device.mac}</div>
-                <div>isOnline: True</div>
+                <div>isOnline: {JSON.stringify(device.status.isOnline)}</div>
             </div>
         )
     }
@@ -30,7 +30,7 @@ class Panel extends React.Component{
 
     prevPage=()=>{
         const {dispatch, currentPage} = this.props;
-        if(currentPage - 1 > 1){
+        if(currentPage - 1 >= 1){
             dispatch({type: ActionTypes.REQUEST_PAGE, page:currentPage-1})
         }
     }

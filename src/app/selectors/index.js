@@ -41,7 +41,7 @@ export const getTotalPages = createSelector(
 )
 
 export const getPage = createSelector(
-    [getItemsOnline, getCurrentPage],
+    [getItems, getCurrentPage],
     (items, page) => {
         return items.slice((page-1) * PER_PAGE, (page-1) * PER_PAGE + PER_PAGE);
     }
